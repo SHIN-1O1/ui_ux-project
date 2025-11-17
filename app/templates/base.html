@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>{% block title %}Hospital Management System{% endblock %}</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" href="{{ url_for('main.index') }}">🏥 Hospital System</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navCollapse">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navCollapse">
+      <ul class="navbar-nav ms-auto">
+        {% if current_user.is_authenticated %}
+          {% if current_user.role == 'admin' %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('main.admin_dashboard') }}">Admin</a></li>
+          {% elif current_user.role == 'doctor' %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('main.doctor_dashboard') }}">Doctor</a></li>
+          {% elif current_user.role == 'patient' %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('main.patient_dashboard') }}">Patient</a></li>
+          {% endif %}
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a></li>
+        {% else %}
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.login') }}">Login</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.register') }}">Register</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="bg-light py-3 border-bottom">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h1 class="h4 mb-0 text-primary">Hospital Management System</h1>
+        <small class="text-muted">Simple appointment & patient management demo</small>
+      </div>
+      {% if current_user.is_authenticated %}
+        <div class="text-end small">
+          Signed in as <strong>{{ current_user.full_name or current_user.username }}</strong>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+<main class="container my-4 flex-grow-1">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, msg in messages %}
+        <div class="alert alert-{{ 'success' if category=='success' else 'danger' }} alert-dismissible fade show" role="alert">
+          {{ msg }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="footer py-3 bg-white border-top mt-auto">
+  <div class="container text-center small text-muted">
+    Hospital Management System • Developed by <strong>Sherwin Infano</strong> for IITM App Dev Project (2025)
+    Register number - 24F3005100
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

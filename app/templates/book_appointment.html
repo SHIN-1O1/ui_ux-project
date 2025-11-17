@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Book Appointment{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <h4 class="mb-3">Book with Dr. {{ doctor.user.full_name or doctor.user.username }}</h4>
+    <div class="card mb-3">
+      <div class="card-body">
+        <form method="post" action="{{ url_for('main.book_appointment', doctor_id=doctor.id) }}">
+          {{ form.hidden_tag() }}
+
+          <div class="mb-3">
+            <label class="form-label">Start</label>
+            <input class="form-control" name="start_datetime" type="datetime-local" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">End</label>
+            <input class="form-control" name="end_datetime" type="datetime-local" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Reason (optional)</label>
+            <textarea class="form-control" name="reason" rows="2"></textarea>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button class="btn btn-success" type="submit">Book Appointment</button>
+            <a class="btn btn-secondary" href="{{ url_for('main.patient_dashboard') }}">Back</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="alert alert-info small">
+      Booking conflicts are checked server-side. If you receive a conflict message, choose another slot.
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Login — Hospital System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="card-title mb-3 text-center">Welcome — Login</h4>
+        <div class="row g-3">
+          <!-- Patient -->
+          <div class="col-md-6">
+            <div class="p-3 rounded" style="background:#f8fbff;">
+              <h5 class="mb-2">Patient</h5>
+              <p class="small text-muted mb-3">Register, book appointments and view your history.</p>
+
+              <form method="post" action="{{ url_for('main.login') }}">
+                {{ form.hidden_tag() }}
+                <div class="mb-2">
+                  <label class="form-label small">Username or Email</label>
+                  {{ form.username(class="form-control", placeholder="patient username or email") }}
+                </div>
+                <div class="mb-3">
+                  <label class="form-label small">Password</label>
+                  {{ form.password(class="form-control", placeholder="password") }}
+                </div>
+                <div class="d-grid gap-2">
+                  <button class="btn btn-primary" type="submit">Login as Patient</button>
+                  <a href="{{ url_for('main.register') }}" class="btn btn-outline-secondary">Register as Patient</a>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Doctor -->
+          <div class="col-md-6">
+            <div class="p-3 rounded" style="background:#fff9f1;">
+              <h5 class="mb-2">Doctor</h5>
+              <p class="small text-muted mb-3">Doctors are added by Admin. Use this panel to sign in.</p>
+
+              <form method="post" action="{{ url_for('main.login') }}">
+                {{ form.hidden_tag() }}
+                <div class="mb-2">
+                  <label class="form-label small">Username or Email</label>
+                  {{ form.username(class="form-control", placeholder="doctor username or email") }}
+                </div>
+                <div class="mb-3">
+                  <label class="form-label small">Password</label>
+                  {{ form.password(class="form-control", placeholder="password") }}
+                </div>
+                <div class="d-grid gap-2">
+                  <button class="btn btn-outline-primary" type="submit">Login as Doctor</button>
+                  <button class="btn btn-light disabled" type="button" aria-disabled="true">Doctor registration by Admin only</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-3">
+        <div class="text-center small text-muted">
+          Admins can sign in using either panel — your role controls the dashboard you see.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

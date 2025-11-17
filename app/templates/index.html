@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Welcome — Hospital System{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+  <h2 class="mb-3">Welcome to the Hospital Management System</h2>
+  <p class="lead text-muted">Login to manage appointments or register as a patient.</p>
+
+  <div class="d-flex justify-content-center gap-2 mt-4">
+    <a href="{{ url_for('main.login') }}" class="btn btn-primary">Login</a>
+    <a href="{{ url_for('main.register') }}" class="btn btn-outline-primary">Register as Patient</a>
+  </div>
+</div>
+{% endblock %}

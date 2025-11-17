@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Doctor Dashboard{% endblock %}
+
+{% block content %}
+<h3 class="mb-3">Dr. {{ current_user.full_name or current_user.username }}</h3>
+
+<div class="card">
+  <div class="card-header">Your Appointments</div>
+  <ul class="list-group list-group-flush">
+    {% for appt in appointments %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <strong>{{ appt.patient.user.full_name or appt.patient.user.username }}</strong><br>
+          <small class="text-muted">{{ appt.start_datetime }} — {{ appt.status }}</small>
+        </div>
+        {% if appt.status == 'Booked' %}
+          <a class="btn btn-sm btn-success" href="{{ url_for('main.complete_appointment', appointment_id=appt.id) }}">Mark Complete</a>
+        {% else %}
+          <span class="badge bg-secondary">Completed</span>
+        {% endif %}
+      </li>
+    {% else %}
+      <li class="list-group-item">No appointments.</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3>Admin Dashboard</h3>
+  <a href="{{ url_for('main.add_doctor') }}" class="btn btn-primary">Add Doctor</a>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card mb-3">
+      <div class="card-header">Pending Doctor Approvals</div>
+      <ul class="list-group list-group-flush">
+        {% for doc in pending_doctors %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{{ doc.user.full_name or doc.user.username }}</strong><br>
+              <small class="text-muted">{{ doc.specialization or '' }}</small>
+            </div>
+            <form method="post" action="{{ url_for('main.approve_doctor', doctor_id=doc.id) }}">
+              <button class="btn btn-sm btn-success">Approve</button>
+            </form>
+          </li>
+        {% else %}
+          <li class="list-group-item">No pending approvals.</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header">All Doctors</div>
+      <ul class="list-group list-group-flush">
+        {% for doc in doctors %}
+          <li class="list-group-item">
+            <strong>{{ doc.user.full_name or doc.user.username }}</strong>
+            <div class="small text-muted">{{ doc.specialization or '—' }} • {{ doc.department.name if doc.department else '' }}</div>
+          </li>
+        {% else %}
+          <li class="list-group-item">No doctors yet.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card mb-3">
+      <div class="card-header">Recent Appointments</div>
+      <ul class="list-group list-group-flush">
+        {% for a in appointments[:10] %}
+          <li class="list-group-item">
+            <div><strong>{{ a.patient.user.full_name or a.patient.user.username }}</strong> → <em>{{ a.doctor.user.full_name or a.doctor.user.username }}</em></div>
+            <div class="small text-muted">{{ a.start_datetime }} — {{ a.status }}</div>
+          </li>
+        {% else %}
+          <li class="list-group-item">No appointments.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
